@@ -1,14 +1,12 @@
-// the 'var', 'let' and 'const' keywords can be used to declare a variable
+// the 'var' and 'let' keywords can be used to declare a variable that is able to change its value (reference)
 var myVariable1a;
 let myVariable1b;
-const myVariable1c;
 
 // if you inspect the value of these variable you will
 // see that they are 'undefined' - we haven't assigned any
 // value to the variables yet
 console.log(myVariable1a);
 console.log(myVariable1b);
-console.log(myVariable1c);
 
 // you can use the assignment operator to store a value
 // refernce in a variable
@@ -30,7 +28,10 @@ console.log(myVariable1a);
 let myVariable2 = 'one line variable declaration & initilization';
 console.log(myVariable2);
 
-// in general, use the 'let' keyword to declare your variables
+// we can also do this with the 'const' keyword, which prevents the value that the varialbe is referencing from changing
+const myConstVariable = 'this string cannot be changed';
+
+// in general, use the 'let' and 'const' keywords to declare your variables
 
 // JavaScript supports 4 primitive data types
 // string, number, boolean and Object
