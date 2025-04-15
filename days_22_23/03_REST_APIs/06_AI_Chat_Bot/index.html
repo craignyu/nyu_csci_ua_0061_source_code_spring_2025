@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>AI Chat Bot (Google Gemini)</title>
+
+    <!-- bring in our helpers library, which will make available the 'performFetch' function -->
+    <script src="../helpers.js"></script>
+
+    <style>
+        #input_container {
+            display: flex;
+        }
+
+        #usermessage {
+            flex: 1 1 auto;
+        }
+
+        #button_send {
+            flex: 0 1 auto;
+        }
+
+        #response {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>AI Chat Bot (Google Gemini)</h1>
+
+    <div id="input_container">
+        <input type="text" id="usermessage">
+        <button id="button_send">Send Message to Google Gemini</button>
+    </div>
+
+    <hr>
+
+    <pre id="response"></pre>
+
+    <!-- custom application code -->
+    <script>
+
+        // some DOM references
+        const usermessage = document.querySelector('#usermessage');
+        const button_send = document.querySelector('#button_send');
+        const response = document.querySelector('#response');
+
+        // when the user clicks on the button
+        button_send.onclick = function (e) {
+
+            // grab the text from the usermessage input box
+            const userText = usermessage.value;
+
+            // populate a 'waiting' message
+            response.innerText = 'Sending message to proxy server ...';
+
+            // The Google AI Studio API lets you work with various machine learning models
+            // It requires an API key, which has a usage limit. Because of this, we don't want to
+            // expose the key here in the JavaScript where anyone can see it. Instead, we will 
+            // store the API key on the server and use a "proxy" script to make a connection to the
+            // API for us
+            
+            // Open up the 'proxy.php' file to see how this works
+
+            // Contact our proxy server
+            performFetch({
+                url: 'proxy.php',
+                method: 'POST',
+                data: {
+                    message: userText
+                },
+                success: function (data) {
+                    response.innerText = data;
+                },
+                error: function (error) {
+                    response.innerText = error;
+                }
+            });
+
+        };
+
+    </script>
+
+</body>
+
+</html>

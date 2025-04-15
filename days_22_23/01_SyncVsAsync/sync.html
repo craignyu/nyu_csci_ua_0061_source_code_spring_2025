@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Sync Demo</title>
+    <style>
+        .box {
+            width: 50px;
+            height: 50px;
+            float: left;
+            border: 1px solid black;
+            margin: 10px;
+            background-color: #eee;
+        }
+
+        .box:hover {
+            background-color: #ff0;
+        }
+
+        #results {
+            clear: both;
+            height: 200px;
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Sync Demo</h1>
+
+    <p>Click the 'Order a Pizza' button to order a pizza. While you wait, try and hover over the small grey boxes. Nothing will happen, because the browser is "blocking" due to the synchronous delay caused by waiting for the <code>while</code> loop to complete.</p>
+
+    <button id="start">Order a Pizza</button>
+
+    <div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>    
+    </div>
+
+    <pre id="results"></pre>
+
+
+    <!-- custom application code -->
+    <script>
+        // obtain a reference to the 'results' div and the 'start' button
+        const results = document.querySelector('#results');
+        const start = document.querySelector('#start');
+
+        start.onclick = function () {
+            results.innerText += new Date() + ': Pizza has been ordered.\n';
+
+            // allow the browser a moment to render before starting the delay - this lets us write the 'Pizza has been ordered' message
+            // to the 'results' element before the code below starts running
+            setTimeout(function() {
+
+                const startTime = Date.now();
+                while (Date.now() - startTime < 5000) {
+                    // nothing happens here other than the 'while' loop spinning for 5 seconds
+                }
+                results.innerText += new Date() + ': Pizza has been delivered!\n';
+
+            }, 0);
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

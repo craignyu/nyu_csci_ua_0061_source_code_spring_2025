@@ -15,10 +15,11 @@
   $db = new SQLite3($path.'/to_do_list.db');
 
   // construct a query to delete the item
-  $sql = "DELETE FROM items WHERE id = '$id'";
+  $sql = "DELETE FROM items WHERE id = :id";
 
-  // prepare the SQL statement
+  // prepare the SQL statement and bind the variable $id to the placeholder value :id
   $statement = $db->prepare($sql);
+  $statement->bindValue(':id', $id);
 
   // execute the query
   $result = $statement->execute();
