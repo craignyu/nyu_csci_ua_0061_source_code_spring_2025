@@ -2,23 +2,13 @@
 <html>
 
 <head>
-    <title>AI Chat Bot (Google Gemini)</title>
+    <title>AI Chat Bot</title>
 
     <!-- bring in our helpers library, which will make available the 'performFetch' function -->
     <script src="../helpers.js"></script>
 
     <style>
-        #input_container {
-            display: flex;
-        }
 
-        #usermessage {
-            flex: 1 1 auto;
-        }
-
-        #button_send {
-            flex: 0 1 auto;
-        }
 
         #response {
             white-space: pre-wrap;
@@ -31,11 +21,15 @@
 
 <body>
 
-    <h1>AI Chat Bot (Google Gemini)</h1>
+    <h1>AI Chat Bot</h1>
 
     <div id="input_container">
         <input type="text" id="usermessage">
-        <button id="button_send">Send Message to Google Gemini</button>
+        <select id="proxy">
+            <option value="proxy_gemini.php">Google Gemini using a personal account</option>
+            <option value="proxy_nyu.php">NYU GenAI API using your NYU account</option>
+        </select>
+        <button id="button_send">Send Message</button>
     </div>
 
     <hr>
@@ -47,6 +41,7 @@
 
         // some DOM references
         const usermessage = document.querySelector('#usermessage');
+        const proxy = document.querySelector('#proxy');
         const button_send = document.querySelector('#button_send');
         const response = document.querySelector('#response');
 
@@ -59,17 +54,21 @@
             // populate a 'waiting' message
             response.innerText = 'Sending message to proxy server ...';
 
-            // The Google AI Studio API lets you work with various machine learning models
-            // It requires an API key, which has a usage limit. Because of this, we don't want to
-            // expose the key here in the JavaScript where anyone can see it. Instead, we will 
-            // store the API key on the server and use a "proxy" script to make a connection to the
-            // API for us
-            
-            // Open up the 'proxy.php' file to see how this works
+            // Generative AI APIs have usage limits, and thus require API keys.
+            // Because of this, we don't want to expose the key here in the JavaScript where anyone 
+            // can see it. Instead, we will store the API key on the server and use a "proxy" script 
+            // to make a connection to the API for us
+
+            // Determine which proxy server we are using. Both proxy servers require API keys
+            // - proxy_gemini.php: access Google Gemini using a personal Google account
+            // - proxy_nyu.php: access NYU's Generative AI API using your NYU Net ID
+            const proxyURL = proxy.value; 
+
+            // Open up each proxy file file to see how this works
 
             // Contact our proxy server
             performFetch({
-                url: 'proxy.php',
+                url: proxyURL,
                 method: 'POST',
                 data: {
                     message: userText
