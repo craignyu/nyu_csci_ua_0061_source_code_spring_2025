@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dynamic Attributes</title>
+
+    <!-- import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <h1>Dynamic Attributes</h1>
+
+    <!-- Set up an 'app' div as the root of our Vue application -->
+    <div id="app">
+
+        <!-- Mustache syntax is used when we want to reference a variable inside of the innerText of an element -->
+        <p>Hello, {{ name }}!</p>
+
+        <!-- We can also reference variables in our HTML attributes using the v-bind keyword -->
+        <img v-bind:src="imageFilename">
+
+        <!-- Vue provides a shorthand for v-bind, so this is also valid: -->
+        <img :src="imageFilename">
+
+        <!-- We can also reference variables in the 'style' attribute by setting up an object -->
+        <!-- Note that 'backgroundColor' and 'fontFamily' are referencing variables, and that 'fontSize' is referencing a string literal -->
+        <p :style="{ 
+            backgroundColor: myColor,
+            fontFamily: myFont,
+            fontSize: '200%' 
+        }">Dynamically styled 'p' tag</p>
+
+    </div>
+
+    <script>
+        // create a new Vue app, and mount it to the '#app' element
+        Vue.createApp({
+
+            // 'data' is a function that returns an object
+            // this object is "reactive" and can be referenced
+            // in the HTML using Mustache syntax
+            data: function () {
+                return {
+                    name: 'Vue',
+                    imageFilename: 'images/pikachu.png',
+                    myColor: 'rgb(255,255,0)',
+                    myFont: 'monospace'
+                }
+            }
+
+        }).mount("#app");
+    </script>
+
+
+</body>
+
+</html>

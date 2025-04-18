@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Hello Vue</title>
+
+    <!-- import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <h1>Hello, Vue</h1>
+
+    <!-- Set up an 'app' div as the root of our Vue application -->
+    <div id="app">
+
+        <!-- {{ }} is called "Mustache syntax". It dynamically inserts values from Vue's 'data' object -->
+
+        <!-- here we are inserting the 'name' variable into a 'p' tag -->
+        <p>Hello, {{ name }}!</p>
+
+        <!-- and here we are inserting the 'color' variable in another 'p' tag -->
+        <p>My favorite color is {{ color }}</p>
+
+    </div>
+
+    <script>
+        // create a new Vue app, and mount it to the '#app' element
+        Vue.createApp({
+
+            // 'data' is a function that returns an object
+            // this object is "reactive" and can be referenced
+            // in the HTML using Mustache syntax
+            data: function () {
+                return {
+                    name: 'Vue',
+                    color: 'green'
+                }
+            }
+
+        }).mount("#app");
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dynamic Classes</title>
+
+    <!-- Import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin-bottom: 10px;
+        }
+
+        .red {
+            background-color: coral;
+        }
+
+        .green {
+            background-color: lime;
+        }
+
+        .purple {
+            background-color: purple;
+        }
+
+        .orange {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dynamic Classes</h1>
+
+    <!-- Set up an 'app' div as the root of our Vue application -->
+    <div id="app">
+
+        <p>Click each box to toggle its style</p>
+
+        <!-- Object syntax: always apply 'box', conditionally apply 'red' -->
+        <div :class="{ box: true, red: isRed }" @click="toggleRed"></div>
+
+        <!-- Array syntax: always apply 'box', conditionally apply 'green' -->
+        <div :class="['box', { green: isGreen }]" @click="toggleGreen"></div>
+
+        <!-- Dynamic class binding: uses the value of the 'dynamicClass' variable to determine the class to apply -->
+        <div :class="['box', dynamicClassName]" @click="toggleDynamicClassName"></div>
+
+    </div>
+
+    <script>
+        Vue.createApp({
+            data: function() {
+                return {
+                    isRed: false,
+                    isGreen: false,
+                    dynamicClassName: 'purple'
+                };
+            },
+
+            methods: {
+                // Method to flip the 'isRed' variable between true and false
+                // This controls whether the 'red' class is applied to the first div
+                toggleRed() {
+                    this.isRed = !this.isRed;
+                },
+
+                // Method to flip the 'isGreen' variable between true and false
+                // This controls whether the 'green' class is applied to the second div
+                toggleGreen() {
+                    this.isGreen = !this.isGreen;
+                },
+
+                // Method to flip the 'dynamicClassName' variable between 'purple' and 'orange'
+                // This controls which of these two classes is applied to the third div
+                toggleDynamicClassName() {
+                    if (this.dynamicClassName == 'purple') {
+                        this.dynamicClassName = 'orange';
+                    }
+                    else {
+                        this.dynamicClassName = 'purple';
+                    }
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>

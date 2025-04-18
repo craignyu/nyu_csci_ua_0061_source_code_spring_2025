@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Conditional Logic</title>
+
+    <!-- Import Vue from CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        .red {
+            background-color: crimson;
+            color: white;
+        }
+
+        .green {
+            background-color: seagreen;
+            color: white;
+        }
+
+        .default {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Conditional Logic</h1>
+
+    <div id="app">
+        <label for="color">Enter a color:</label>
+        <input id="color" type="text" v-model="favoriteColor">
+
+        <!-- Conditional rendering based on the value of favoriteColor -->
+        <!-- v-if tests a Boolean condition - if it evalutes to true, -->
+        <!-- the 'div' element will be added to the DOM-->
+        <div v-if="favoriteColor === 'red'" class="message red">
+            Red is bold!
+        </div>
+
+        <!-- v-else-if tests a follow up condition -->
+        <div v-else-if="favoriteColor === 'green'" class="message green">
+            Green is calm.
+        </div>
+
+        <!-- v-else is our fallback case if both conditions above evaluated to false -->
+        <div v-else class="message default">
+            Try typing "red" or "green"
+        </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            data: function() {
+                return {
+                    favoriteColor: ''
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

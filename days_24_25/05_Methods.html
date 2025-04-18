@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Methods</title>
+
+    <!-- Import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 200%;
+        }
+
+        .tinyBox {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Methods</h1>
+
+    <!-- Set up an 'app' div as the root of our Vue application -->
+    <div id="app">
+
+        <!-- This box shows the current count and its background color -->
+        <div class="box" :style="{ backgroundColor: currentColor }">{{ counter }}</div>
+
+        <!-- 'v-on:' is used to bind event listeners to elements -->
+        <!-- Here we tell Vue to call the 'increaseCounter' function when the button is clicked -->
+        <button v-on:click="increaseCounter">Increase Counter</button>
+
+        <!-- The '@' symbol is shorthand for 'v-on:' and is used more widely -->
+        <!-- This button is bound to the 'pickRandomColor' method -->
+        <button @click="pickRandomColor">Pick New Color</button>
+
+        <hr>
+
+        <!-- All standard DOM events can be used in Vue with '@' -->
+        <!-- These boxes call 'makeYellow' on mouseover and 'resetColor' on mouseout -->
+        <div class="tinyBox" @mouseover="makeYellow" @mouseout="resetColor"></div>
+        <div class="tinyBox" @mouseover="makeYellow" @mouseout="resetColor"></div>
+        <div class="tinyBox" @mouseover="makeYellow" @mouseout="resetColor"></div>
+
+    </div>
+
+    <script>
+        // Create a new Vue app and mount it to the '#app' element
+        Vue.createApp({
+            // The reactive data object
+            data: function() {
+                return {
+                    counter: 0,
+                    colors: ['coral', 'green', 'lightblue', 'yellow', 'pink'],
+                    currentColor: 'green'
+                };
+            },
+
+            // Methods define functions that can be called by elements in the template
+            methods: {
+                // This method increases the 'counter' value
+                // 'this' refers to the Vue app instance and accesses reactive data
+                increaseCounter() {
+                    console.log("Here");
+                    this.counter++;
+                },
+
+                // This method sets 'currentColor' to a random color from the 'colors' array
+                pickRandomColor() {
+                    const randomIndex = Math.floor(Math.random() * this.colors.length);
+                    this.currentColor = this.colors[randomIndex];
+                },
+
+                // These methods receive the event object and directly modify the target element
+                // There are more Vue-like ways to handle this, but this approach works for simple cases
+                makeYellow(event) {
+                    event.currentTarget.style.backgroundColor = 'yellow';
+                },
+
+                resetColor(event) {
+                    event.currentTarget.style.backgroundColor = '#fff';
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>

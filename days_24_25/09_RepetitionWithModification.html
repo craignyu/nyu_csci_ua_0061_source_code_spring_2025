@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Repetition with Modification</title>
+
+    <!-- Import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        /* Modal backdrop and positioning */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Modal content box styling */
+        .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Repetition with Modification</h1>
+
+    <!-- Root element for the Vue application -->
+    <div id="app">
+
+        <!-- Modal box appears when 'showModal' is true -->
+        <!-- This section allows users to edit the name of an existing fruit -->
+        <div v-if="showModal" class="modal-overlay">
+            <div class="modal">
+                <label for="newFruitName">New Fruit Name:</label>
+                <!-- This input is bound to 'modifyFruitName' -->
+                <input id="newFruitName" type="text" v-model="modifyFruitName">
+
+                <!-- Save applies the change, Cancel discards it -->
+                <button @click="saveModifyFruit">Save</button>
+                <button @click="cancelModifyFruit">Cancel</button>
+            </div>
+        </div>
+
+        <!-- List of fruit names with Modify and Delete buttons -->
+        <ul>
+            <!-- v-for repeats this <li> for each item in the array -->
+            <!-- We use the fruit name as the key since it is unique -->
+            <li v-for="(fruit, index) in fruitNames" :key="fruit">
+                <button @click="showModifyFruitInterface(fruit, index)">Modify</button>
+                <button @click="deleteFruit(index)">Delete</button>
+                {{ fruit }}
+            </li>
+        </ul>
+
+        <!-- Section for adding a new fruit -->
+        <div>
+            <label for="newFruit">New Fruit:</label>
+            
+            <!-- This input is bound to 'newFruitName' -->
+            <input id="newFruit" type="text" v-model="newFruitName">
+
+            <!-- Clicking this button adds the new fruit to the array -->
+            <button @click="addFruit">Add Fruit</button>
+        </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            // The 'data' function returns a reactive object that stores application state
+            data: function () {
+                return {
+                    fruitNames: ['apple', 'pear', 'peach', 'orange'], // Initial list of fruits
+                    newFruitName: '',       // Holds value of the new fruit being added
+                    modifyFruitName: '',    // Temporary value for editing an existing fruit
+                    modifyFruitIndex: null, // Index of the fruit currently being edited
+                    showModal: false        // Controls visibility of the modal box
+                };
+            },
+
+            // The 'methods' object contains functions that can be triggered by events
+            methods: {
+                // Adds a new fruit to the list if it's not empty and doesn't already exist
+                addFruit: function () {
+                    this.newFruitName = this.newFruitName.trim();
+
+                    if (
+                        this.newFruitName.length > 0 &&
+                        !this.fruitNames.includes(this.newFruitName)
+                    ) {
+                        this.fruitNames.push(this.newFruitName);
+                        this.newFruitName = ''; // Clear the input box
+                    }
+                },
+
+                // Removes the fruit at the given index
+                deleteFruit: function (index) {
+                    this.fruitNames.splice(index, 1);
+                },
+
+                // Opens the modal and sets the current fruit and index for editing
+                showModifyFruitInterface: function (fruit, index) {
+                    this.modifyFruitName = fruit;
+                    this.modifyFruitIndex = index;
+                    this.showModal = true;
+                },
+
+                // Saves the edited fruit name if it’s valid and unique
+                saveModifyFruit: function () {
+                    this.modifyFruitName = this.modifyFruitName.trim();
+
+                    if (
+                        this.modifyFruitName.length > 0 &&
+                        !this.fruitNames.includes(this.modifyFruitName)
+                    ) {
+                        this.fruitNames[this.modifyFruitIndex] = this.modifyFruitName;
+                        this.showModal = false; // Close modal
+                    }
+                },
+
+                // Cancels the edit and resets modal state
+                cancelModifyFruit: function () {
+                    this.modifyFruitName = '';
+                    this.modifyFruitIndex = null;
+                    this.showModal = false;
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>

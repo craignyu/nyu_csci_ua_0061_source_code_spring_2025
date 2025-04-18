@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Two Way Binding</title>
+
+    <!-- import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Two Way Binding</h1>
+
+    <!-- Set up an 'app' div as the root of our Vue application -->
+    <div id="app">
+
+        <div>
+            Type a color name here:
+            <!-- v-model creates a two-way binding between this input and the 'myColor' variable in the 'data' object -->
+            <!-- Any changes to the text box will automatically update 'myColor', and any other element referencing 'myColor' will also update -->
+            <input type="text" v-model="myColor">
+        </div>
+
+        <!-- This div’s background color is bound to the 'myColor' variable -->
+        <!-- Typing a new value into the input updates both the box color and the displayed text -->
+        <div class="box" :style="{ backgroundColor: myColor }">
+            {{ myColor }}
+        </div>
+
+    </div>
+
+    <script>
+        // create a new Vue app, and mount it to the '#app' element
+        Vue.createApp({
+
+            data: function () {
+                return {
+                    myColor: 'yellow'
+                }
+            }
+
+        }).mount("#app");
+    </script>
+
+
+</body>
+
+</html>

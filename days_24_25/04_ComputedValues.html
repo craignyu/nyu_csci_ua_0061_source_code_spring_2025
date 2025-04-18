@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Computed Values</title>
+
+    <!-- Import the Vue library from a CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Computed Values</h1>
+
+    <!-- Set up an 'app' div as the root of our Vue application -->
+    <div id="app">
+
+        <!-- firstName and lastName are bound to reactive variables defined in the 'data' object -->
+        <label for="firstName">First Name:</label>
+        <input id="firstName" type="text" v-model="firstName">
+
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" type="text" v-model="lastName">
+
+        <!-- fullName is a computed property that updates automatically whenever firstName or lastName changes -->
+        <div>
+            Your full name is {{ fullName }}
+        </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            // Define reactive data properties
+            data: function() {
+                return {
+                    firstName: 'Pikachu',
+                    lastName: 'Pokemon'
+                };
+            },
+
+            // Computed values are automatically recalculated
+            // whenever the reactive values they depend on change
+            computed: {
+                fullName() {
+                    return this.lastName + ', ' + this.firstName;
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>
