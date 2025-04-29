@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Dance Party</title>
+
+    <!-- Styles & Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+
+    <!-- Vue core library -->
+    <script src="js/vue.global.js"></script>
+</head>
+
+<body>
+
+    <header>
+        Pixel Dance Party
+    </header>
+
+    <div id="app">
+
+        <!-- Dance floor -->
+        <div id="dance-floor">
+
+            <!-- Spacer div (to prevent dancers from appearing above the dance floor) -->
+            <div class="spacer"></div>
+
+            <!-- The drop zone container where we will be placing all of our divs -->
+            <div class="drop-zone-container">
+                <div v-for="(zone, index) in dropZones" :key="index" class="dancer-container"
+                    @click="dropDancer(index)">
+                    <img v-if="zone.gif" :src="zone.gif">
+                </div>
+
+                <!-- Sample Container (create 44 of these) -->
+                <!--
+                <div class="dancer-container">
+                    <img src="images/gifs/3sjq.gif">
+                </div>
+                -->
+
+            </div>
+
+        </div>
+
+
+        <!-- Dancer selection panel -->
+        <div id="dancer-panel">
+            <div :class="['dancer-choice', {selected: image.selected}]" v-for="(image, index) in dancerGifs"
+                :key="index" @click="selectGif(index, image.filename)">
+
+                <span v-if="image.filename == 'REMOVE'" style="font-size: 0.7rem;">Remove</span>
+                <img v-else :src="image.filename">
+
+            </div>
+
+            <!-- Sample selection button (create 1 for each GIF) - use the 'img' tag for images, and the 'span' tag for the 'remove' button -->
+            <!--
+            <div class="dancer-choice selected">
+                <img src="images/gifs/3sjq.gif">
+                <span v-if="image.filename == 'REMOVE'" style="font-size: 0.7rem;">Remove</span>
+            </div>
+            -->
+        </div>
+
+    </div>
+
+    <script type="module">
+
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, updateDoc, writeBatch, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // PASTE YOUR FIREBASE CONFIG OBJECT HERE - THE CODE WILL NOT WORK WITHOUT THIS!
+        const firebaseConfig = {
+            
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+
+        // Our Vue application
+        Vue.createApp({
+            data: function () {
+                return {
+                    // provided: an array of GIFs for our dancers
+                    dancerGifs: [
+                        { filename: 'REMOVE', selected: false },
+                        { filename: 'images/gifs/3sjq.gif', selected: false },
+                        { filename: 'images/gifs/3uG2.gif', selected: false },
+                        { filename: 'images/gifs/4SHX.gif', selected: false },
+                        { filename: 'images/gifs/4tyq.gif', selected: false },
+                        { filename: 'images/gifs/5IPv.gif', selected: false },
+                        { filename: 'images/gifs/6ov.gif', selected: false },
+                        { filename: 'images/gifs/7Uy.gif', selected: false },
+                        { filename: 'images/gifs/33Hg.gif', selected: false },
+                        { filename: 'images/gifs/hdt.gif', selected: false },
+                        { filename: 'images/gifs/K9r.gif', selected: false },
+                        { filename: 'images/gifs/K9s.gif', selected: false },
+                        { filename: 'images/gifs/Paz.gif', selected: false },
+                        { filename: 'images/gifs/SU1.gif', selected: false },
+                        { filename: 'images/gifs/tIH.gif', selected: false },
+                        { filename: 'images/gifs/VgK.gif', selected: false },
+                        { filename: 'images/gifs/X5NZ.gif', selected: false },
+                        { filename: 'images/gifs/XiPu.gif', selected: false },
+                        { filename: 'images/gifs/XOsX.gif', selected: false },
+                        { filename: 'images/gifs/xw.gif', selected: false },
+                        { filename: 'images/gifs/Z6W2.gif', selected: false },
+                        { filename: 'images/gifs/zYi.gif', selected: false },
+                        { filename: 'images/gifs/XHXk.gif', selected: false },
+                        { filename: 'images/gifs/XqyP.gif', selected: false },
+                        { filename: 'images/gifs/1fLh.gif', selected: false },
+                        { filename: 'images/gifs/6mx.gif', selected: false },
+                        { filename: 'images/gifs/ZDcm.gif', selected: false },
+                        { filename: 'images/gifs/Y3il.gif', selected: false },
+                        { filename: 'images/gifs/6mz.gif', selected: false },
+                        { filename: 'images/gifs/zYj.gif', selected: false }
+                    ],
+
+                    // variable to keep track of which gif has been selected
+                    selectedGif: '',
+
+                    // array of the 44 drop zones where we can place gifs
+                    dropZones: []
+                }
+            },
+            methods: {
+
+                // this method lets the user select a gif from the buttons along the bottom of the page
+                selectGif: function (index, image) {
+                    // store a reference to this gif
+                    this.selectedGif = image;
+
+                    // deselect all other buttons
+                    for (let object of this.dancerGifs) {
+                        object.selected = false;
+                    }
+
+                    // ensure that this button is the one that is selected
+                    this.dancerGifs[index].selected = true;
+                },
+
+                // this method adds a gif to one of the drop zones
+                dropDancer: async function (index) {
+
+                    // only proceed if the user has selected one of the gifs from the buttons along the bottom of the page
+                    if (this.selectedGif) {
+
+                        // if they clicked on the remove button, we should remove the dancer at this drop zone
+                        if (this.selectedGif == 'REMOVE') {
+                            this.dropZones[index].gif = null;
+                        }
+
+                        // otherwise we should place a dancer at this drop zone
+                        else {
+                            this.dropZones[index].gif = this.selectedGif;
+                        }
+
+                        // clear the selected gif indicator
+                        this.selectedGif = '';
+
+                        // deselect all buttons - this is helpful since we don't want users to "click spam" and add lots of the same
+                        // gif to multiple areas of the dance floor at once
+                        for (let object of this.dancerGifs) {
+                            object.selected = false;
+                        }
+
+                        // save the updated array back to Firebase
+
+                        // get a reference to the "dancefloor" collection's "state" document
+                        const stateDoc = doc(db, "dancefloor", "state");
+
+                        // update the document with a new value (the stringified version of our dropZones reactive variable)
+                        await updateDoc(stateDoc, {
+                            dropZones: JSON.stringify(this.dropZones)
+                        });
+
+                    }
+                },
+
+                // this function reads the contents of the Firestore collection once when the page loads
+                // it also sets up an event listener to receive data whenever the Firestore collection changes
+                loadAndListenToDropzones() {
+
+                    // obtain a reference to the "dancefloor" collection, and find the "state" document inside of it
+                    const stateDoc = doc(db, "dancefloor", "state");
+
+                    // set up a listener to listen for changes on this document
+                    // when a change is detected, run the callback function described here
+                    // note we have to use "fat arrow" syntax to allow Vue to access its reactive data object
+                    // also note that this is guarenteed to run at least once to get an initial set of data
+                    onSnapshot(stateDoc, (snapshot) => {
+
+                        // if data exists in the document
+                        if (snapshot.exists()) {
+
+                            // extract the data into a local variable
+                            const dataFromFirebase = snapshot.data();
+
+                            // store the data into a reactive variable 'dropZones'
+                            // note 'dataFromFirebase.dropZones' is the JSON object that we uploaded
+                            this.dropZones = JSON.parse(dataFromFirebase.dropZones);
+
+                            console.log("Dropzones updated via snapshot!");
+                        } else {
+                            console.error("Dancefloor state document missing!");
+                        }
+                    });
+                }
+            },
+            mounted: function () {
+
+                this.loadAndListenToDropzones();
+
+                /*
+                // create drop zones (44 of these are needed)
+                for (let i = 0; i < 44; i++) {
+                    this.dropZones.push({
+                        'gif': null
+                    })
+                }
+                */
+
+            }
+        }).mount("#app");
+    </script>
+
+</body>
+
+</html>

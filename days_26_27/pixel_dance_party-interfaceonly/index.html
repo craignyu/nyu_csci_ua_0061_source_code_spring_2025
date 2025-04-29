@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Dance Party</title>
+
+    <!-- Styles & Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+
+    <!-- Vue core library -->
+    <script src="js/vue.global.js"></script>
+</head>
+
+<body>
+
+    <header>
+        Pixel Dance Party
+    </header>
+
+    <div id="app">
+
+        <!-- Dance floor -->
+        <div id="dance-floor">
+
+            <!-- Spacer div (to prevent dancers from appearing above the dance floor) -->
+            <div class="spacer"></div>
+
+            <!-- The drop zone container where we will be placing all of our divs -->
+            <div class="drop-zone-container">
+                <div class="dancer-container">
+                    <img src="images/gifs/3sjq.gif">
+                </div>
+
+                <!-- Sample Container (create 44 of these) -->
+                <!--
+                <div class="dancer-container">
+                    <img src="images/gifs/3sjq.gif">
+                </div>
+                -->
+
+            </div>
+
+        </div>
+
+
+        <!-- Dancer selection panel -->
+        <div id="dancer-panel">
+            <div>
+
+                <span style="font-size: 0.7rem;">Remove</span>
+                <img src="images/gifs/3sjq.gif">
+
+            </div>
+
+            <!-- Sample selection button (create 1 for each GIF) - use the 'img' tag for images, and the 'span' tag for the 'remove' button -->
+            <!--
+            <div class="dancer-choice selected">
+                <span v-if="image.filename == 'REMOVE'" style="font-size: 0.7rem;">Remove</span>
+                <img src="images/gifs/3sjq.gif">
+            </div>
+            -->
+        </div>
+
+    </div>
+
+    <script type="module">
+
+        // Our Vue application
+        Vue.createApp({
+            data: function () {
+                return {
+                    // provided: an array of GIFs for our dancers
+                    dancerGifs: [
+                        { filename: 'REMOVE', selected: false },
+                        { filename: 'images/gifs/3sjq.gif', selected: false },
+                        { filename: 'images/gifs/3uG2.gif', selected: false },
+                        { filename: 'images/gifs/4SHX.gif', selected: false },
+                        { filename: 'images/gifs/4tyq.gif', selected: false },
+                        { filename: 'images/gifs/5IPv.gif', selected: false },
+                        { filename: 'images/gifs/6ov.gif', selected: false },
+                        { filename: 'images/gifs/7Uy.gif', selected: false },
+                        { filename: 'images/gifs/33Hg.gif', selected: false },
+                        { filename: 'images/gifs/hdt.gif', selected: false },
+                        { filename: 'images/gifs/K9r.gif', selected: false },
+                        { filename: 'images/gifs/K9s.gif', selected: false },
+                        { filename: 'images/gifs/Paz.gif', selected: false },
+                        { filename: 'images/gifs/SU1.gif', selected: false },
+                        { filename: 'images/gifs/tIH.gif', selected: false },
+                        { filename: 'images/gifs/VgK.gif', selected: false },
+                        { filename: 'images/gifs/X5NZ.gif', selected: false },
+                        { filename: 'images/gifs/XiPu.gif', selected: false },
+                        { filename: 'images/gifs/XOsX.gif', selected: false },
+                        { filename: 'images/gifs/xw.gif', selected: false },
+                        { filename: 'images/gifs/Z6W2.gif', selected: false },
+                        { filename: 'images/gifs/zYi.gif', selected: false },
+                        { filename: 'images/gifs/XHXk.gif', selected: false },
+                        { filename: 'images/gifs/XqyP.gif', selected: false },
+                        { filename: 'images/gifs/1fLh.gif', selected: false },
+                        { filename: 'images/gifs/6mx.gif', selected: false },
+                        { filename: 'images/gifs/ZDcm.gif', selected: false },
+                        { filename: 'images/gifs/Y3il.gif', selected: false },
+                        { filename: 'images/gifs/6mz.gif', selected: false },
+                        { filename: 'images/gifs/zYj.gif', selected: false }
+                    ],
+                }
+            },
+            methods: {
+
+
+            },
+            mounted: function () {
+
+
+            }
+        }).mount("#app");
+    </script>
+
+</body>
+
+</html>
